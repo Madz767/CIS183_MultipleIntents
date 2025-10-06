@@ -61,6 +61,7 @@ public class Pet implements Serializable
 
     static class PetType
     {
+        String test;
         static ArrayList<String> typeOfPet = new ArrayList<>(Arrays.asList("Dog","Cat","Snake","Chicken","Hamster"));
 
         public static String petAt(int i)
