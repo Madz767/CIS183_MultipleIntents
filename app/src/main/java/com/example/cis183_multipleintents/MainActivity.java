@@ -17,8 +17,10 @@ import androidx.core.view.WindowInsetsCompat;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    private ArrayList<Pet> listOfPets;
+    static private ArrayList<Pet> listOfPets;
 
+    static int numberTesting = 50;
+    static boolean firstLoad = true;
 
     //this is going to be used for testing purposes only
     //just to show on listview interact with arrays
@@ -29,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     Button btn_j_addPet;
     Intent intent_j_addNewPet;
+    Intent intent_j_displayUpdate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +44,39 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        Intent cameFrom = getIntent();
+
+        if(cameFrom.getSerializableExtra("PetData") != null)
+        {
+            Pet petData = (Pet)cameFrom.getSerializableExtra("PetData");
+            listOfPets.add(petData);
+        }
+
+        if(firstLoad)
+        {
+            //I need a list to house all pets for the vet clinic
+            listOfPets = new ArrayList<>();
+            Pet pet = new Pet();
+            pet.setName("Tito");
+            pet.setAge(12);
+            pet.setType("Dog");
+            //add the new pet to our list
+            listOfPets.add(pet);
+            Pet anotherpet = new Pet("Willow", 5, "Dog");
+
+            //add the new pet to our list
+            listOfPets.add(anotherpet);
+
+            addDummyDataToArrayList();
+
+            firstLoad = false;
+        }
+
         //GUI Connection
         lv_j_listOfPets = findViewById(R.id.lv_v_listOfPets);
         btn_j_addPet = findViewById(R.id.btn_v_addPet);
-        intent_j_addNewPet = new Intent(MainActivity.this, AddPet.class);
+        intent_j_displayUpdate = new Intent(MainActivity.this, PetDisplayUpdate.class);
+        intent_j_addNewPet = new Intent(MainActivity.this, AddPet2.class);
 
         //we need an adapter to be used with the listview
         //if the cells require more than one string being displayed
@@ -53,24 +85,14 @@ public class MainActivity extends AppCompatActivity {
         //ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, test);
         //lv_j_listOfPets.setAdapter(adapter);
 
-        //I need a list to house all pets for the vet clinic
-        listOfPets = new ArrayList<>();
-        Pet pet = new Pet();
-        pet.setName("Tito");
-        pet.setAge(12);
-        pet.setType("Dog");
 
-        //add the new pet to our list
-        listOfPets.add(pet);
 
-        Pet anotherpet = new Pet("Willow", 5, "Dog");
 
-        //add the new pet to our list
-        listOfPets.add(anotherpet);
 
-        addDummyDataToArrayList();
+
         displayAllPetData();
         fillListView();
+        addButtonListener();
 
         //Log.d("Pet Dat:",pet.getName() + " is a " + pet.getType() + " and is " + pet.getAge() + " years old");
     }
@@ -115,10 +137,15 @@ public class MainActivity extends AppCompatActivity {
             {
                 //first parameter is name of "variable"
                 //second parameter is the data to pass to this intent
-                intent_j_addNewPet.putExtra("infopassed","hello from main");
+                intent_j_addNewPet.putExtra("InfoPassed","hello from main");
                 startActivity(intent_j_addNewPet);
+
 
             }
         });
+    }
+    public void addPet(Pet p)
+    {
+        listOfPets.add(p);
     }
 }
