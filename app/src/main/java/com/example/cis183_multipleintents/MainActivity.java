@@ -1,8 +1,11 @@
 package com.example.cis183_multipleintents;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import androidx.activity.EdgeToEdge;
@@ -24,6 +27,9 @@ public class MainActivity extends AppCompatActivity {
 
     PetListAdapter plAdapter;
 
+    Button btn_j_addPet;
+    Intent intent_j_addNewPet;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
 
         //GUI Connection
         lv_j_listOfPets = findViewById(R.id.lv_v_listOfPets);
+        btn_j_addPet = findViewById(R.id.btn_v_addPet);
+        intent_j_addNewPet = new Intent(MainActivity.this, AddPet.class);
 
         //we need an adapter to be used with the listview
         //if the cells require more than one string being displayed
@@ -98,4 +106,19 @@ public class MainActivity extends AppCompatActivity {
         lv_j_listOfPets.setAdapter(plAdapter);
     }
 
+
+    private void addButtonListener()
+    {
+        btn_j_addPet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                //first parameter is name of "variable"
+                //second parameter is the data to pass to this intent
+                intent_j_addNewPet.putExtra("infopassed","hello from main");
+                startActivity(intent_j_addNewPet);
+
+            }
+        });
+    }
 }
