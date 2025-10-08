@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CIS183_MultipleIntents">
         <activity
+            android:name=".AddPetType"
+            android:exported="false" />
+        <activity
             android:name=".AddPet2"
             android:exported="false" />
         <activity
